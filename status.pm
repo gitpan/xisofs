@@ -1,4 +1,4 @@
-#   xisofs v1.2 Perl/Tk Interface to mkisofs / cdwrite
+#   xisofs v1.3 Perl/Tk Interface to mkisofs / cdwrite
 #   Copyright (c) 1997 Steve Sherwood (pariah@netcomuk.co.uk)
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -85,11 +85,45 @@ sub status_window
 
 		$statusWindow->update;
 
+		$status::y = 1;
+
 		return $statusWindow;
 	}
 	elsif ($phase == 3)
 	{
-		$statusOutput->insert('end', $current);
+		$_ = $current;
+		my $ret = 0;
+		$ret = 1 if (/\n/);
+
+		$current =~ s/\n//g;
+
+		if (/\r/)
+		{
+			my @rbits = split("\r", $current);
+			
+			my $z = $status::y . ".0";
+
+			$_ = shift(@rbits);
+			$statusOutput->insert($z, $_);
+
+			foreach $txt (@rbits)
+			{
+				my $z2 = $status::y . "." . length($txt);
+				$statusOutput->delete($z,$z2);
+				$statusOutput->insert($z, $txt);
+			}
+		}
+		else
+		{	
+			$statusOutput->insert('end', "$current");
+		}
+
+		if ($ret == 1)
+		{
+			$statusOutput->insert('end', "\n");
+			$status::y++;
+		}
+		
 		$statusOutput->yview('end') unless ($status::FREEZE == 1); 
 		$statusWindow->update;
 	}		

@@ -1,5 +1,5 @@
-#!/usr/local/bin/perl
-#   xisofs v1.2 Perl/Tk Interface to mkisofs / cdwrite
+#!yyzzy
+#   xisofs v1.3 Perl/Tk Interface to mkisofs / cdwrite
 #   Copyright (c) 1997 Steve Sherwood (pariah@netcomuk.co.uk)
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@ $ICONS = "large_icons";
 use lib "xyzzy";
 
 use Tk;
-use Tk::Balloon;
+use Bubble;
 use help;
 use selector;
 use dlg;
@@ -39,7 +39,7 @@ use dirs;
 use cdwrite;
 use defaults;
 
-$version = "xisofs v1.2";
+$version = "xisofs v1.3";
 $current_filename = '';
 $changed = 0;
 
@@ -171,10 +171,9 @@ $buttonBar = $mw->Frame->pack(
 	-side => 'top',
 	-fill => 'x');
 
-$balloon = $buttonBar->Balloon(
-	-initwait => 1000,
+$bubble = new Bubble(
 	-background => 'PapayaWhip',
-	-state => 'balloon');
+	-foreground => 'black');
 
 $fileButtonBar = $buttonBar->Frame->pack(
 	-side => 'left');
@@ -185,8 +184,8 @@ $newButton = $fileButtonBar->Button(
 	-activebackground => 'grey80',
 	-image => $newPixmap)->pack(
 		-side => 'left');
-$balloon->attach($newButton,
-	-balloonmsg => 'Reset to blank document');
+$bubble->attach($newButton,
+	-text => 'Reset to blank document');
 
 $openPixmap = $fileButtonBar->Pixmap(-file => "$ROOT/$ICONS/open.xpm");
 $openButton = $fileButtonBar->Button(
@@ -194,8 +193,8 @@ $openButton = $fileButtonBar->Button(
 	-activebackground => 'grey80',
 	-image => $openPixmap)->pack(
 		-side => 'left');
-$balloon->attach($openButton,
-	-balloonmsg => 'Open Project');
+$bubble->attach($openButton,
+	-text => 'Open Project');
 
 $savePixmap = $fileButtonBar->Pixmap(-file => "$ROOT/$ICONS/save.xpm");
 $saveButton = $fileButtonBar->Button(
@@ -203,8 +202,8 @@ $saveButton = $fileButtonBar->Button(
 	-activebackground => 'grey80',
 	-image => $savePixmap)->pack(
 		-side => 'left');
-$balloon->attach($saveButton,
-	-balloonmsg => 'Save Project');
+$bubble->attach($saveButton,
+	-text => 'Save Project');
 
 $buildButtonBar = $buttonBar->Frame->pack(
 	-padx => 10,
@@ -216,8 +215,8 @@ $buildButton = $buildButtonBar->Button(
 	-activebackground => 'grey80',
 	-image => $buildPixmap)->pack(
 		-side => 'left');
-$balloon->attach($buildButton,
-	-balloonmsg => 'Build ISO9660 Image');
+$bubble->attach($buildButton,
+	-text => 'Build ISO9660 Image');
 
 $eltoritoPixmap = $buildButtonBar->Pixmap(-file => "$ROOT/$ICONS/eltorito.xpm");
 $eltoritoButton = $buildButtonBar->Button(
@@ -225,8 +224,8 @@ $eltoritoButton = $buildButtonBar->Button(
 	-activebackground => 'grey80',
 	-image => $eltoritoPixmap)->pack(
 		-side => 'left');
-$balloon->attach($eltoritoButton,
-	-balloonmsg => 'El Torito Options');
+$bubble->attach($eltoritoButton,
+	-text => 'El Torito Options');
 
 $filesPixmap = $buildButtonBar->Pixmap(-file => "$ROOT/$ICONS/files.xpm");
 $filesButton = $buildButtonBar->Button(
@@ -234,8 +233,8 @@ $filesButton = $buildButtonBar->Button(
 	-activebackground => 'grey80',
 	-image => $filesPixmap)->pack(
 		-side => 'left');
-$balloon->attach($filesButton,
-	-balloonmsg => 'Exclude Files List');
+$bubble->attach($filesButton,
+	-text => 'Exclude Files List');
 
 $dirsPixmap = $buildButtonBar->Pixmap(-file => "$ROOT/$ICONS/dirs.xpm");
 $dirsButton = $buildButtonBar->Button(
@@ -243,8 +242,8 @@ $dirsButton = $buildButtonBar->Button(
 	-activebackground => 'grey80',
 	-image => $dirsPixmap)->pack(
 		-side => 'left');
-$balloon->attach($dirsButton,
-	-balloonmsg => 'Exclude Directories List');
+$bubble->attach($dirsButton,
+	-text => 'Exclude Directories List');
 
 $quitPixmap = $buttonBar->Pixmap(-file => "$ROOT/$ICONS/quit.xpm");
 $quitButton = $buttonBar->Button(
@@ -252,8 +251,8 @@ $quitButton = $buttonBar->Button(
 	-activebackground => 'grey80',
 	-image => $quitPixmap)->pack(
 		-side => 'right');
-$balloon->attach($quitButton,
-	-balloonmsg => 'Quit');
+$bubble->attach($quitButton,
+	-text => 'Quit');
 
 if (($cdwrite::cdwrite) || ($cdwrite::cdrecord))
 {
@@ -267,8 +266,8 @@ if (($cdwrite::cdwrite) || ($cdwrite::cdrecord))
 		-activebackground => 'grey80',
 		-image => $writePixmap)->pack(
 			-side => 'left');
-	$balloon->attach($writeButton,
-		-balloonmsg => 'Write ISO9660 Image To CDROM');
+	$bubble->attach($writeButton,
+		-text => 'Write ISO9660 Image To CDROM');
 	
 	$optionPixmap = $writeButtonBar->Pixmap(-file => "$ROOT/$ICONS/cdopt.xpm");
 	$optionButton = $writeButtonBar->Button(
@@ -276,8 +275,8 @@ if (($cdwrite::cdwrite) || ($cdwrite::cdrecord))
 		-activebackground => 'grey80',
 		-image => $optionPixmap)->pack(
 			-side => 'left');
-	$balloon->attach($optionButton,
-		-balloonmsg => 'CDR Options');
+	$bubble->attach($optionButton,
+		-text => 'CDR Options');
 }
 
 #----------

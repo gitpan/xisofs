@@ -1,4 +1,4 @@
-#   xisofs v1.2 Perl/Tk Interface to mkisofs / cdwrite
+#   xisofs v1.3 Perl/Tk Interface to mkisofs / cdwrite
 #   Copyright (c) 1997 Steve Sherwood (pariah@netcomuk.co.uk)
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -620,6 +620,13 @@ sub write_cdrom
 	my ($src) = @_;
 	my $cmdline;
 
+	if ($main::dataField{'use_program'} eq '')
+	{
+		dlg::error($cdwrite::top,
+			'No CD Writer program has been specified. Use CDR Options to select','Error');
+		return;
+	}
+
 	if ($main::dataField{'use_program'} eq 'cdwrite')
 	{
 		$cmdline = 'cdwrite --verbose';
@@ -639,12 +646,6 @@ sub write_cdrom
 				'cdrecord cannot be found on the path','Error');
 			return;
 		}
-	}
-
-	unless ($cdwrite::cdwrite)
-	{
-		dlg::error($cdwrite::top,'cdwrite cannot be found on the path','Error');
-		return;
 	}
 
 	if (length($src) == 0)

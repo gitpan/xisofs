@@ -1,4 +1,4 @@
-#   xisofs v1.2 Perl/Tk Interface to mkisofs / cdwrite
+#   xisofs v1.3 Perl/Tk Interface to mkisofs / cdwrite
 #   Copyright (c) 1997 Steve Sherwood (pariah@netcomuk.co.uk)
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -110,7 +110,17 @@ sub display
 	$which = `which cdrecord`;
 	if (substr($which,0,1) eq '/')
 	{
-		$version_cdrecord = 'cdrecord v??';
+		$version_cdrecord = 'cdrecord v1.4 or earlier';
+		chomp(my @hlp = `cdrecord -version 2>&1`);
+		foreach(@hlp)
+		{
+			chomp;
+			next unless (/^Cdrecord release/);
+
+			($version_cdrecord) = /^Cdrecord release (\d\.\d)/;
+			$version_cdrecord = "cdrecord $version_cdrecord";
+			last;
+		}
 	}
 
 

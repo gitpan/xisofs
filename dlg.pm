@@ -1,4 +1,4 @@
-#   xisofs v1.2 Perl/Tk Interface to mkisofs / cdwrite
+#   xisofs v1.3 Perl/Tk Interface to mkisofs / cdwrite
 #   Copyright (c) 1997 Steve Sherwood (pariah@netcomuk.co.uk)
 #
 #   This program is free software; you can redistribute it and/or modify
